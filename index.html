@@ -1,235 +1,222 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
-   <body>
-    <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ретро Змейка</title>
-    <style>
-        body {
-            margin: 0;
-            background-color: #111424;
-            color: white;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        h1 {
-            margin: 0 0 10px 0;
-            font-size: 32px;
-            color: #00ff66;
-            text-shadow: 0 0 10px #00ff66;
-        }
-        #score-board {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        #gameCanvas {
-            border: 4px solid #333;
-            box-shadow: 0 0 30px rgba(0, 255, 102, 0.2);
-            background-color: #05070f;
-        }
-        .controls {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #888;
-        }
-    </style>
+    <title>Алтын-Арашан</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Подключаем иконки font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <h1>ЗМЕЙКА</h1>
-    <div id="score-board">Счет: <span id="score">0</span> | Рекорд: <span id="best">0</span></div>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <div class="controls">Управление: Стрелочки или WASD на клавиатуре</div>
+    <!-- Шапка сайта (Header) -->
+    <header>
+        <div class="container header-flex">
+            <div class="logo">Altyn-Arashan</div>
+            
+            <!-- Переключатель языков -->
+            <div class="lang-switcher">
+                <button onclick="changeLanguage('kg')" id="btn-kg">Кыргызча</button>
+                <button onclick="changeLanguage('ru')" id="btn-ru" class="active">Русский</button>
+                <button onclick="changeLanguage('en')" id="btn-en">English</button>
+            </div>
 
-<script>
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-const scoreElement = document.getElementById("score");
-const bestElement = document.getElementById("best");
+            <nav>
+                <ul>
+                    <li><a href="#about" id="nav-about">О месте</a></li>
+                    <li><a href="#gallery" id="nav-gallery">Галерея</a></li>
+                    <li><a href="#instagram" id="nav-insta">Маршрут</a></li>
+                    <li><a href="#reviews" id="nav-reviews">Отзывы</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-// Размер одной ячейки на поле
-const gridSize = 20;
-const tileCount = canvas.width / gridSize;
+    <!-- Главный баннер (Hero Section) -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 id="hero-title">Ущелье Алтын-Арашан</h1>
+            <p id="hero-desc">Горячие источники, величественные горы и первозданная природа Иссык-Куля</p>
+            <a href="#instagram" class="btn" id="hero-btn">Смотреть маршрут</a>
+        </div>
+    </section>
 
-// Параметры змейки и игры
-let snake = [];
-let food = { x: 0, y: 0 };
-let dx = gridSize; // скорость по X
-let dy = 0;        // скорость по Y
-let score = 0;
-let bestScore = 0;
-let gameInterval;
+    <!-- Описание (About) -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 id="about-title">О прекрасном Алтын-Арашане</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p id="about-p1"><strong>Алтын-Арашан</strong> (в переводе «Золотой источник») — это одно из самых знаменитых и живописных ущелий в Кыргызстане, расположенное недалеко от города Каракол.</p>
+                    <p id="about-p2">Оно знаменито своими целебными горячими радоновыми и сероводородными источниками, которые бьют прямо под открытым небом среди тянь-шаньских елей на высоте 2600 метров.</p>
+                </div>
+                <div class="about-features">
+                    <div class="feature"><i class="fa-solid fa-mountain"></i> <span id="f-height">Высота: ~2600 м</span></div>
+                    <div class="feature"><i class="fa-solid fa-hot-tub-person"></i> <span id="f-springs">Термальные источники</span></div>
+                    <div class="feature"><i class="fa-solid fa-route"></i> <span id="f-track">Популярный трекинг</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-// Инициализация/Сброс игры
-function initGame() {
-    snake = [
-        { x: gridSize * 5, y: gridSize * 5 },
-        { x: gridSize * 4, y: gridSize * 5 },
-        { x: gridSize * 3, y: gridSize * 5 }
-    ];
-    dx = gridSize;
-    dy = 0;
-    score = 0;
-    scoreElement.innerText = score;
-    spawnFood();
-    
-    // Очищаем старый таймер, если он был, и запускаем игру со скоростью 100мс на кадр
-    clearInterval(gameInterval);
-    gameInterval = setInterval(gameLoop, 100);
-}
+    <!-- Галерея (Gallery) -->
+    <section id="gallery" class="section bg-light">
+        <div class="container">
+            <h2 id="gallery-title">Галерея</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=500&q=80" alt="Горы"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=500&q=80" alt="Природа"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=500&q=80" alt="Река"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=500&q=80" alt="Источники"></div>
+            </div>
+        </div>
+    </section>
 
-// Генерация еды в случайном месте (не на змейке)
-function spawnFood() {
-    food.x = Math.floor(Math.random() * tileCount) * gridSize;
-    food.y = Math.floor(Math.random() * tileCount) * gridSize;
+    <!-- Инстаграм Блок (Instagram Route) -->
+    <section id="instagram" class="section insta-section">
+        <div class="container text-center">
+            <h2 id="insta-title">Наш Instagram Маршрут</h2>
+            <p id="insta-desc">В нашем Instagram аккаунте мы подробно расписали весь маршрут, лайфхаки для туристов и выложили сотни ярких фотографий гостей!</p>
+            <div class="insta-box">
+                <i class="fa-brands fa-instagram insta-icon"></i>
+                <h3>@AltynArashan_Travel</h3>
+                <p id="insta-box-text">Узнай, как добраться, где остановиться и посмотри актуальные сторис.</p>
+                <a href="https://instagram.com" target="_blank" class="btn btn-insta" id="insta-btn">Открыть Instagram маршрут</a>
+            </div>
+        </div>
+    </section>
 
-    // Если еда попала на тело змейки, пересоздаем ее
-    for (let cell of snake) {
-        if (cell.x === food.x && cell.y === food.y) {
-            spawnFood();
-            break;
+    <!-- Отзывы гостей (Reviews) -->
+    <section id="reviews" class="section bg-light">
+        <div class="container">
+            <h2 id="reviews-title">Отзывы наших гостей</h2>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <p class="review-text" id="r1-text">"Это невероятное место! Дорога туда — настоящее приключение на внедорожниках, а купание в горячих источниках после долгого похода — это просто рай."</p>
+                    <h4 id="r1-author">— Александр, Бишкек</h4>
+                </div>
+                <div class="review-card">
+                    <p class="review-text" id="r2-text">"Вид на пик Палатка открывается потрясающий. Останавливались в гостевом доме, люди очень гостеприимные. Обязательно вернусь еще раз!"</p>
+                    <h4 id="r2-author">— Эмили, Франция</h4>
+                </div>
+                <div class="review-card">
+                    <p class="review-text" id="r3-text">"Чистейший воздух, запах хвои и дикая природа. Instagram маршрут помог заранее подготовиться к трекингу. Всем советую!"</p>
+                    <h4 id="r3-author">— Нурбек, Ош</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал (Footer) -->
+    <footer>
+        <div class="container text-center">
+            <p id="footer-text">&copy; 2026 Алтын-Арашан Туризм. Добро пожаловать в Кыргызстан!</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript для переключения языков -->
+    <script>
+        const translations = {
+            kg: {
+                "nav-about": "Аймак жөнүндө",
+                "nav-gallery": "Галерея",
+                "nav-insta": "Маршрут",
+                "nav-reviews": "Пикирлер",
+                "hero-title": "Алтын-Арашан капчыгайы",
+                "hero-desc": "Ысык-Көлдүн ысык булактары, залкар тоолору жана кол тийбеген табияты",
+                "hero-btn": "Маршрутту көрүү",
+                "about-title": "Кереметтүү Алтын-Арашан",
+                "about-p1": "<strong>Алтын-Арашан</strong> — бул Кыргызстандагы эң атактуу жана кооз капчыгайлардын бири, Каракол шаарына жакын жерде жайгашкан.",
+                "about-p2": "Бул жер 2600 метр бийиктикте, Тянь-Шань карагайларынын арасында ачык асман алдында чыккан дарылык касиети бар радон жана күкүрт суулуу ысык булактары менен белгилүү.",
+                "f-height": "Бийиктиги: ~2600 м",
+                "f-springs": "Термалдык булактар",
+                "f-track": "Популярдуу трекинг",
+                "gallery-title": "Сүрөт галереясы",
+                "insta-title": "Биздин Instagram Маршрут",
+                "insta-desc": "Биздин Instagram баракчабызда биз толук маршрутту, туристтер үчүн кеңештерди жазып, коноктордун жүздөгөн ачык сүрөттөрүн жүктөдүк!",
+                "insta-box-text": "Кантип жетүүнү, кайда калууну билип алыңыз жана актуалдуу сторисдерди көрүңүз.",
+                "insta-btn": "Instagram маршрутту ачуу",
+                "reviews-title": "Конокторубуздун пикирлери",
+                "r1-text": "\"Бул укмуштуудай жер! Ал жакка баруучу жол — жол тандабас унаалар менен чыныгы укмуштуу окуя, ал эми узак жөө жүрүштөн кийин ысык булактарга түшүү — бул жөн эле бейиш.\"",
+                "r1-author": "— Александр, Бишкек",
+                "r2-text": "\"Палатка чокусунун көрүнүшү абдан сонун. Конок үйүндө калдык, адамдары абдан меймандос экен. Сөзсүз түрдө дагы келем!\"",
+                "r2-author": "— Эмили, Франция",
+                "r3-text": "\"Таза аба, карагайдын жыты жана жапайы табият. Instagram маршруту трекингге алдын ала даярданууга жардам берди. Баарыңарга сунуштайм!\"",
+                "r3-author": "— Нурбек, Ош",
+                "footer-text": "&copy; 2026 Алтын-Арашан Туризм. Кыргызстанга кош келиңиздер!"
+            },
+            ru: {
+                "nav-about": "О месте",
+                "nav-gallery": "Галерея",
+                "nav-insta": "Маршрут",
+                "nav-reviews": "Отзывы",
+                "hero-title": "Ущелье Алтын-Арашан",
+                "hero-desc": "Горячие источники, величественные горы и первозданная природа Иссык-Куля",
+                "hero-btn": "Смотреть маршрут",
+                "about-title": "О прекрасном Алтын-Арашане",
+                "about-p1": "<strong>Алтын-Арашан</strong> (в переводе «Золотой источник») — это одно из самых знаменитых и живописных ущелий в Кыргызстане, расположенное недалеко от города Каракол.",
+                "about-p2": "Оно знаменито своими целебными горячими радоновыми и сероводородными источниками, которые бьют прямо под открытым небом среди тянь-шаньских елей на высоте 2600 метров.",
+                "f-height": "Высота: ~2600 м",
+                "f-springs": "Термальные источники",
+                "f-track": "Популярный трекинг",
+                "gallery-title": "Галерея",
+                "insta-title": "Наш Instagram Маршрут",
+                "insta-desc": "В нашем Instagram аккаунте мы подробно расписали весь маршрут, лайфхаки для туристов и выложили сотни ярких фотографий гостей!",
+                "insta-box-text": "Узнай, как добраться, где остановиться и посмотри актуальные сторис.",
+                "insta-btn": "Открыть Instagram маршрут",
+                "reviews-title": "Отзывы наших гостей",
+                "r1-text": "\"Это невероятное место! Дорога туда — настоящее приключение на внедорожниках, а купание в горячих источниках после долгого похода — это просто рай.\"",
+                "r1-author": "— Александр, Бишкек",
+                "r2-text": "\"Вид на пик Палатка открывается потрясающий. Останавливались в гостевом доме, люди очень гостеприимные. Обязательно вернусь еще раз!\"",
+                "r2-author": "— Эмили, Франция",
+                "r3-text": "\"Чистейший воздух, запах хвои и дикая природа. Instagram маршрут помог заранее подготовиться к трекингу. Всем советую!\"",
+                "r3-author": "— Нурбек, Ош",
+                "footer-text": "&copy; 2026 Алтын-Арашан Туризм. Добро пожаловать в Кыргызстан!"
+            },
+            en: {
+                "nav-about": "About",
+                "nav-gallery": "Gallery",
+                "nav-insta": "Route",
+                "nav-reviews": "Reviews",
+                "hero-title": "Altyn-Arashan Gorge",
+                "hero-desc": "Hot springs, majestic mountains and pristine nature of Issyk-Kul",
+                "hero-btn": "View Route",
+                "about-title": "About Beautiful Altyn-Arashan",
+                "about-p1": "<strong>Altyn-Arashan</strong> ('Golden Spa') is one of the most famous and picturesque gorges in Kyrgyzstan, located near Karakol city.",
+                "about-p2": "It is famous for its healing hot radon and hydrogen sulfide springs, which flow right under the open sky among Tien Shan spruces at an altitude of 2600 meters.",
+                "f-height": "Altitude: ~2600 m",
+                "f-springs": "Thermal Springs",
+                "f-track": "Popular Trekking",
+                "gallery-title": "Gallery",
+                "insta-title": "Our Instagram Route",
+                "insta-desc": "On our Instagram account, we have detailed the entire route, travel hacks, and posted hundreds of vivid photos of our guests!",
+                "insta-box-text": "Find out how to get there, where to stay, and check out current stories.",
+                "insta-btn": "Open Instagram Route",
+                "reviews-title": "Guest Reviews",
+                "r1-text": "\"This place is incredible! The road there is a real off-road adventure, and swimming in hot springs after a long hike is just paradise.\"",
+                "r1-author": "— Alexander, Bishkek",
+                "r2-text": "\"The view of Palatka Peak is stunning. We stayed in a guesthouse, the people are very hospitable. Will definitely come back!\"",
+                "r2-author": "— Emily, France",
+                "r3-text": "\"Purest air, the smell of pine, and wild nature. The Instagram route helped to prepare for the trek in advance. Highly recommend!\"",
+                "r3-author": "— Nurbek, Osh",
+                "footer-text": "&copy; 2026 Altyn-Arashan Tourism. Welcome to Kyrgyzstan!"
+            }
+        };
+
+        function changeLanguage(lang) {
+            // Переводим все элементы по ID
+            for (let id in translations[lang]) {
+                let element = document.getElementById(id);
+                if (element) {
+                    element.innerHTML = translations[lang][id];
+                }
+            }
+
+            // Меняем активную кнопку стиля
+            document.querySelectorAll('.lang-switcher button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(btn-${lang}).classList.add('active');
         }
-    }
-}
-
-// Главный цикл
-function gameLoop() {
-    moveSnake();
-
-    if (checkGameOver()) {
-        if (score > bestScore) {
-            bestScore = score;
-            bestElement.innerText = bestScore;
-        }
-        alert("Игра окончена! Нажмите ОК, чтобы начать заново.");
-        initGame();
-        return;
-    }
-
-    checkFoodCollision();
-    draw();
-}
-
-// Движение змейки
-function moveSnake() {
-    // Создаем новую голову на основе текущей скорости
-    const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-    // Добавляем её в начало массива
-    snake.unshift(head);
-    // Удаляем хвост (если змейка не съела еду, этот шаг сбалансирует длину в checkFoodCollision)
-    snake.pop();
-}
-
-// Проверка столкновений
-function checkGameOver() {
-    const head = snake[0];
-
-    // Столкновение со стенами
-    if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
-        return true;
-    }
-
-    // Столкновение со своим хвостом (проверяем со 2-го элемента)
-    for (let i = 1; i < snake.length; i++) {
-        if (head.x === snake[i].x && head.y === snake[i].y) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// Проверка поедания еды
-function checkFoodCollision() {
-    const head = snake[0];
-    if (head.x === food.x && head.y === food.y) {
-        score += 10;
-        scoreElement.innerText = score;
-        spawnFood();
-        
-        // Увеличиваем змейку: просто дублируем последний элемент хвоста
-        const tail = { ...snake[snake.length - 1] };
-        snake.push(tail);
-    }
-}
-
-// Отрисовка всех элементов
-function draw() {
-    // Очистка поля
-    ctx.fillStyle = "#05070f";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Рисуем сетку (едва заметную для атмосферы)
-    ctx.strokeStyle = "#12172b";
-    ctx.lineWidth = 1;
-    for (let i = 0; i < canvas.width; i += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i, canvas.height);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(0, i);
-        ctx.lineTo(canvas.width, i);
-        ctx.stroke();
-    }
-
-    // Рисуем еду (красный светящийся квадрат)
-    ctx.fillStyle = "#ff3366";
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = "#ff3366";
-    ctx.fillRect(food.x + 2, food.y + 2, gridSize - 4, gridSize - 4);
-
-    // Рисуем змейку (зеленая со свечением)
-    ctx.shadowBlur = 8;
-    ctx.shadowColor = "#00ff66";
-    
-    snake.forEach((cell, index) => {
-        // Голова чуть ярче хвоста
-        ctx.fillStyle = index === 0 ? "#00ff66" : "#00aa44";
-        ctx.fillRect(cell.x + 1, cell.y + 1, gridSize - 2, gridSize - 2);
-    });
-
-    // Сброс тени, чтобы не тормозило
-    ctx.shadowBlur = 0;
-}
-
-// Обработка нажатий клавиш
-window.addEventListener("keydown", (e) => {
-    const key = e.key.toLowerCase();
-    
-    // Запрещаем разворот на 180 градусов (например, влево, если ползем вправо)
-    if ((key === "arrowleft" || key === "a") && dx === 0) {
-        dx = -gridSize;
-        dy = 0;
-    } else if ((key === "arrowup" || key === "w") && dy === 0) {
-        dx = 0;
-        dy = -gridSize;
-    } else if ((key === "arrowright" || key === "d") && dx === 0) {
-        dx = gridSize;
-        dy = 0;
-    } else if ((key === "arrowdown" || key === "s") && dy === 0) {
-        dx = 0;
-        dy = gridSize;
-    }
-});
-
-// Запуск игры при загрузке страницы
-initGame();
-</script>
+    </script>
 </body>
-</html> 
+</html>
